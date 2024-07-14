@@ -1,0 +1,23 @@
+"""
+Given an array of integers and a target sum, determine the sum nearest to but not exceeding the target that can be created. 
+To create the sum, use any element of your array zero or more times.
+"""
+
+for i in range(int(input())):
+    n, k = map(int, input().strip().split())
+    numbers = sorted([int(x) for x in input().strip().split()])
+    
+    weight = [0] * (k+1)
+    
+    for w in range(1, k+1):
+        maximum = 0
+        for number in numbers:
+            if number > w:
+                break;
+            elif number + weight[w - number] > maximum:
+                maximum = number + weight[w-number]
+        
+        weight[w] = maximum
+    
+    
+    print(weight[k])
