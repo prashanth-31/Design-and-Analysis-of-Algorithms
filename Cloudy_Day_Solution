@@ -1,0 +1,60 @@
+"""
+uibdó in Colombia is one among the cities that receive maximum rainfall in the world.
+All year round, the city is covered in clouds. The city has many towns, located on a one-dimensional line. The positions and populations of each town on the number line are known to you. Every cloud covers all towns located at a certain distance from it. 
+A town is said to be in darkness if there exists at least one cloud such that the town is within the cloud's range. Otherwise, it is said to be sunny.The city council has determined that they have enough money to remove exactly one cloud using their latest technology. 
+Thus they want to remove the cloud such that the fewest number of people are left in darkness after the cloud is removed. What is the maximum number of people that will be in a sunny town after removing exactly one cloud?
+Note: If a town is not covered by any clouds, then it is already considered to be sunny, and the population of this town must also be included in the final answer.
+Complete the function maximumPeople which takes four arrays representing the populations of each town, locations of the towns, locations of the clouds, and the extents of coverage of the clouds respectively, and returns the maximum number of people that will be in a sunny town after removing exactly one cloud.
+"""
+
+
+def maximumPeople(towns, cloud_start, cloud_end):
+    towns = sorted(towns)
+    cloud_start = sorted(cloud_start)
+    cloud_end = sorted(cloud_end)
+
+    cloud_start_i = 0
+    cloud_end_i = 0
+    clouds = set()
+
+    d = {}
+    free = 0
+    for town_i in range(len(towns)):
+        town_x = towns[town_i][0]
+        
+        while cloud_start_i < len(cloud_start) and cloud_start[cloud_start_i][0] <= town_x:
+            clouds.add(cloud_start[cloud_start_i][1])
+            cloud_start_i += 1
+        
+        while cloud_end_i < len(cloud_end) and cloud_end[cloud_end_i][0] < town_x:
+            clouds.remove(cloud_end[cloud_end_i][1])
+            cloud_end_i += 1
+        
+        if len(clouds) == 1:
+            cloud_id = next(iter(clouds))
+            if cloud_id in d:
+                d[cloud_id] += towns[town_i][1]
+            else:
+                d[cloud_id] = towns[town_i][1]
+        elif len(clouds) == 0:
+            free += towns[town_i][1]
+
+    max_people_in_cloud = max(d.values(), default=0)
+    return max_people_in_cloud + free
+
+
+def main():
+    n = int(input().strip())
+    p = list(map(int, input().strip().split()))
+    x = list(map(int, input().strip().split()))
+    towns = [[x[i], p[i], -1] for i in range(n)]
+    m = int(input().strip())
+    y = list(map(int, input().strip().split()))
+    r = list(map(int, input().strip().split()))
+    cloud_start = [[y[i] - r[i], i] for i in range(m)]
+    cloud_end = [[y[i] + r[i], i] for i in range(m)]
+    result = maximumPeople(towns, cloud_start, cloud_end)
+    print(result)
+
+if __name__ == "__main__":
+    main()
