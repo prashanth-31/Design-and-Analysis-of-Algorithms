@@ -1,0 +1,17 @@
+"""
+Amanda has a string of lowercase letters that she wants to copy to a new string. She can perform the following operations with the given costs. She can perform them any number of times to construct a new string:
+1. Append a character to the end of string s at a cost of a dollars.
+2. Choose any substring of s and append it to the end of s at no charge.
+For example, given the string s = 'abcd', it can be copied for 4 dollars. Start by copying 'a', 'b', 'c', and 'd' individually at a cost of 1 dollar per character. String 'abcd' at this time. Copy 'abc' to the end of 'abcd' at no cost to complete the copy.
+"""
+
+num_strings = int(input().strip())
+for index in range(num_strings):
+    string_input = input().strip()
+    seen_chars = []
+    unique_count = 0
+    for char in string_input:
+        if char not in seen_chars:
+            unique_count += 1
+            seen_chars.append(char)
+    print(unique_count)
